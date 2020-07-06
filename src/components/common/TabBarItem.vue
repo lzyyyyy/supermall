@@ -24,7 +24,7 @@ export default {
   
   methods: {
     itemClick() {
-      this.$router.replace(this.path)
+      this.$router.push(this.path)
     }
   },
   props: {
