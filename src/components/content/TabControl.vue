@@ -38,10 +38,7 @@ export default {
   .control {
     width: 100%;
     display: flex;
-    position: sticky;
-    background-color: #fff;
-    top: 43px;
-    z-index: 999;                    
+    background-color: #fff;                  
   }
   .control .control-item{
     flex: 1;
