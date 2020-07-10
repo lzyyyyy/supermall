@@ -3,11 +3,12 @@
     <nav-bar class="home-color">
       <span slot="center">购物街</span>
     </nav-bar>
+    <tab-control :controldata="['流行','新款','精选']" @tabClick='tabClick' ref="tabControl2" :class="{zindex:isImbibition,display:!isImbibition}"></tab-control>
     <scroll class="content" ref="scroll" :probeType='3' @scroll1="contentScroll" @pullingUp='loadMore'>
-    <home-swiper :banner='banner'></home-swiper>
+    <home-swiper :banner='banner' @swiperImageLoad='swiperImageLoad'></home-swiper>
     <home-recommend :recommend='recommend'></home-recommend>
     <home-feature></home-feature>
-    <tab-control :controldata="['流行','新款','精选']" @tabClick='tabClick'></tab-control>
+    <tab-control :controldata="['流行','新款','精选']" @tabClick='tabClick' ref="tabControl1"></tab-control>
     <goods :list='goods[currentType].list'></goods>
     </scroll>
     <back-top @click.native="backClick" :class="{showBack:backshow}"></back-top>
@@ -48,7 +49,10 @@ export default {
         'pop': {page:0,list:[]},
         'new': {page:0,list:[]},
         'sell': {page:0,list:[]}
-      }
+      },
+      offsetTop:0,
+      isImbibition: false,
+      saveY:0
     }
   },
   created() {
@@ -56,6 +60,15 @@ export default {
     this.getGoodsData('pop')
     this.getGoodsData('new')
     this.getGoodsData('sell')
+    this.$bus.$on('itemImageLoad',()=>{
+      this.$refs.scroll.scroll.refresh()
+    })
+  },
+  activated() {
+    this.$refs.scroll.scroll.scrollTo(0,this.saveY,0)
+  },
+  deactivated() {
+    this.saveY=this.$refs.scroll.scroll.y
   },
   methods: {
     // 网络封装相关方法
@@ -70,7 +83,6 @@ export default {
       getGoodsData(type,page).then(res=>{
       this.goods[type].list.push(...res.data.data.list)
       this.goods[type].page+=1
-      this.$refs.scroll.scroll.refresh()
       })
     },
     //事件相关方法
@@ -86,6 +98,8 @@ export default {
         this.currentType='sell'
         break;
       } 
+    this.$refs.tabControl1.currtIndex=index
+    this.$refs.tabControl2.currtIndex=index
     },
     backClick() {
       this.$refs.scroll.scroll.scrollTo(0,0,500)
@@ -95,11 +109,19 @@ export default {
         this.backshow=false
       }else{
         this.backshow=true
+      };
+      if(position.y<-this. offsetTop){
+        this.isImbibition=true
+      }else{
+        this.isImbibition=false
       }
     },
     loadMore() {
        this.getGoodsData(this.currentType)
        this.$refs.scroll.scroll.finishPullUp()
+    },
+    swiperImageLoad() {
+      this.offsetTop=this.$refs.tabControl1.$el.offsetTop
     }
   }
 }
@@ -122,6 +144,13 @@ export default {
     bottom: 49px;
   }
   .showBack{
+    display: none;
+  }
+  .zindex{
+    position: relative;
+    z-index: 999999;
+  }
+  .display{
     display: none;
   }
 </style>
