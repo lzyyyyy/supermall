@@ -10,6 +10,7 @@ const Home = () => import('views/Home/Home')
 const Category = () => import('views/Category')
 const ShopCart = () => import('views/ShopCart')
 const Profile = () => import('views/Profile')
+const Detail = () => import('views/Detail/Detail')
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,10 @@ const router = new VueRouter ({
     {
       path: '/profile',
       component: Profile
+    },
+    {
+      path: '/detail/:iid',
+      component: Detail
     }
   ],
   mode: 'history'
