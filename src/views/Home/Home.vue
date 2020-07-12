@@ -137,8 +137,7 @@ export default {
     font-size: 20px;
     color: #fff;
   }
-  .content{
-    overflow: hidden;
+  .content{    
     position: absolute;
     top: 44px;
     bottom: 49px;

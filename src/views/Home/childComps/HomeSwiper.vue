@@ -5,11 +5,18 @@
           <img :src="item.image" alt="" @load="swiperLoad">
         </a>
       </swiper-item>
-    </swiper>
+  </swiper>
 </template>
 
 <script>
-import {getHomeMultiData} from 'network/home'
+// <template>
+//     <swiper class="detailswiper">
+//       <swiper-item v-for='item in banner'>        
+//           <img :src="item">     
+//       </swiper-item>
+//     </swiper>
+// </template>
+
 import {Swiper,SwiperItem} from 'components/common/swiper'
 export default {
   name: 'homeswiper',
