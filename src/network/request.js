@@ -10,7 +10,7 @@ export function request(config) {
 
 export function request1(config) {
   const instance1 = axios.create({
-    baseURL:'http://152.136.185.210:8000/api/n3',
+    baseURL:'#',
     timeout:5000
   })
   return instance1(config)
