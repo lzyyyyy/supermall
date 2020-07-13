@@ -1,12 +1,16 @@
 <template>
-  <div>
-    <detail-nav-bar></detail-nav-bar>
-    <detail-swiper :topImages='topImages'></detail-swiper>
-    <detail-base-info :goods='GoodsInfo'></detail-base-info>
-    <detail-shop-info :shop='shopInfo'></detail-shop-info>
-    <detail-goods-info :detailInfo='detailInfo'></detail-goods-info>
-    <detail-param-info :paramInfo='paramInfo'/>
-    <detail-comment-info :commentInfo='commentInfo'/>
+  <div class="detail">
+    <detail-nav-bar/>
+    <scroll class="cotent" ref="scroll1"  :probeType='3' @scroll1="contentScroll" @pullingUp='loadMore'>
+      <detail-swiper :topImages='topImages'/>
+      <detail-base-info :goods='GoodsInfo'/>
+      <detail-shop-info :shop='shopInfo'/>
+      <detail-goods-info :detailInfo='detailInfo'/>
+      <detail-param-info :paramInfo='paramInfo'/>
+      <detail-comment-info :commentInfo='commentInfo'/>
+      <goods-template :list='list'/>
+    </scroll>
+    <back-top @click.native="backClick" :class="{showBack:backshow}"/>
   </div>
 </template>
 
@@ -18,8 +22,14 @@ import DetailShopInfo from './childComps/DetailShopInfo'
 import DetailGoodsInfo from './childComps/DetailGoodsInfo'
 import DetailParamInfo from './childComps/DetailParamInfo'
 import DetailCommentInfo from './childComps/DetailCommentInfo'
+import GoodsTemplate from 'components/content/GoodsShow/Goods'
+import Scroll from 'components/common/Scroll/Scroll.vue'
+import BackTop from 'components/content/BackTop/BackTop'
 
-import {getDetailData,Goods} from 'network/detail'
+
+import {getDetailData,Goods,getRecommend} from 'network/detail'
+
+
 
 export default {
   name:'detail',
@@ -30,7 +40,10 @@ export default {
     DetailShopInfo,
     DetailGoodsInfo,
     DetailParamInfo,
-    DetailCommentInfo
+    DetailCommentInfo,
+    GoodsTemplate,
+    Scroll,
+    BackTop
   },
   data() {
     return {
@@ -40,7 +53,9 @@ export default {
       shopInfo:{},
       detailInfo:{},
       paramInfo:{},
-      commentInfo:{}
+      commentInfo:{},
+      list:[],
+      backshow:true
     }
   },
   created() {
@@ -55,10 +70,41 @@ export default {
       this.paramInfo = data.itemParams
       this.commentInfo = data.rate.list[0]
     })
-  }
+    getRecommend().then(res=>{
+      // console.log(res);
+      this.list = res.data.data.list
+    })
+  },
+  backClick() {
+      this.$refs.scroll1.scroll.scrollTo(0,0,500)
+  },
+  contentScroll(position) {
+      if(position.y<-1000){
+        this.backshow=false
+      }else{
+        this.backshow=true
+      };
+      if(position.y<-this. offsetTop){
+        this.isImbibition=true
+      }else{
+        this.isImbibition=false
+      }
+    },
 }
 </script>
 
-<style>
-
+<style scoped>
+  .detail{
+    height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+  .cotent{
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+  }
+  .showBack{
+    display: none;
+  }
 </style>

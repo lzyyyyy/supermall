@@ -1,6 +1,6 @@
 <template>
   <div class="goodsshowitem" @click="itemClick">
-    <img :src="goodsdata.show.img" alt="" @load="imageLoad">
+    <img :src="showImage" alt="" @load="imageLoad">
     <div class="goods-info">
     <p>{{goodsdata.title}}</p>
     <span class="price">{{goodsdata.price}}</span>
@@ -27,11 +27,16 @@ export default {
     itemClick() {
       this.$router.push('/detail/'+this.goodsdata.iid);
     }
+  },
+  computed:{
+    showImage() {
+      return this.goodsdata.image || this.goodsdata.show.img
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .goodsshowitem {
     padding-bottom: 40px;
     position: relative;

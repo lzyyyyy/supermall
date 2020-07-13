@@ -1,6 +1,6 @@
 <template>
     <div>
-      <keep-alive exclude="Detail">
+      <keep-alive exclude="detail">
         <router-view></router-view>
       </keep-alive>
       <tab-bar-all></tab-bar-all>
