@@ -34,12 +34,18 @@ export default {
     }),
     // 监听滚动事件
     this.scroll.on('scroll',(position)=>{
-      this.$emit('scroll1',position)
+      this.$emit('scroll',position)
     })
     //监听上拉事件
     this.scroll.on('pullingUp',()=>{
       this.$emit('pullingUp')
     })
+  },
+  methods: {
+    refresh() {
+      this.scroll.refresh()
+      console.log(123);
+    }
   }
 }
 </script>

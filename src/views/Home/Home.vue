@@ -4,7 +4,7 @@
       <span slot="center">购物街</span>
     </nav-bar>
     <tab-control :controldata="['流行','新款','精选']" @tabClick='tabClick' ref="tabControl2" :class="{zindex:isImbibition,display:!isImbibition}"></tab-control>
-    <scroll class="content" ref="scroll" :probeType='3' @scroll1="contentScroll" @pullingUp='loadMore'>
+    <scroll class="content" ref="scroll" :probeType='3' @scroll="contentScroll" @pullingUp='loadMore' touch-action: none>
     <home-swiper :banner='banner' @swiperImageLoad='swiperImageLoad'></home-swiper>
     <home-recommend :recommend='recommend'></home-recommend>
     <home-feature></home-feature>
@@ -24,6 +24,8 @@ import TabControl from 'components/content/TabControl.vue'
 import Goods from 'components/content/GoodsShow/Goods'
 import Scroll from 'components/common/Scroll/Scroll.vue'
 import BackTop from 'components/content/BackTop/BackTop.vue'
+import {debouce} from 'common/utils'
+import {itemListenerMixin} from 'common/mixin'
 
 import {getHomeMultiData,getGoodsData} from 'network/home'
 
@@ -38,7 +40,8 @@ export default {
     Goods,
     Scroll,
     BackTop
-  },
+  }, 
+  mixins:[itemListenerMixin],
   data() {
     return{
       banner: [],
@@ -52,23 +55,32 @@ export default {
       },
       offsetTop:0,
       isImbibition: false,
-      saveY:0
+      saveY:0,
+      ImageLoadListener:null,
     }
   },
+  
   created() {
     this.getHomeMultiData()
     this.getGoodsData('pop')
     this.getGoodsData('new')
     this.getGoodsData('sell')
-    this.$bus.$on('itemImageLoad',()=>{
-      this.$refs.scroll.scroll.refresh()
-    })
+  },
+  mounted() {
+    const refresh = debouce(this.$refs.scroll.refresh,200)
+    this.ImageLoadListener = () => {
+      refresh()
+    }
+    this.$bus.$on('itemImageLoad',this.ImageLoadListener)
   },
   activated() {
     this.$refs.scroll.scroll.scrollTo(0,this.saveY,0)
   },
   deactivated() {
+    //保存y值
     this.saveY=this.$refs.scroll.scroll.y
+    //2.取消全局事件的监听
+    this.$bus.$off('itemImageLoad',this.ImageLoadListener)
   },
   methods: {
     // 网络封装相关方法
@@ -118,6 +130,7 @@ export default {
     },
     loadMore() {
        this.getGoodsData(this.currentType)
+      //  必须调用finishPullUp方法才能进行下一次
        this.$refs.scroll.scroll.finishPullUp()
     },
     swiperImageLoad() {

@@ -1,7 +1,7 @@
 <template>
   <div class="detail">
     <detail-nav-bar/>
-    <scroll class="cotent" ref="scroll1"  :probeType='3' @scroll1="contentScroll" @pullingUp='loadMore'>
+    <scroll class="cotent">
       <detail-swiper :topImages='topImages'/>
       <detail-base-info :goods='GoodsInfo'/>
       <detail-shop-info :shop='shopInfo'/>
@@ -10,7 +10,7 @@
       <detail-comment-info :commentInfo='commentInfo'/>
       <goods-template :list='list'/>
     </scroll>
-    <back-top @click.native="backClick" :class="{showBack:backshow}"/>
+  
   </div>
 </template>
 
@@ -24,7 +24,7 @@ import DetailParamInfo from './childComps/DetailParamInfo'
 import DetailCommentInfo from './childComps/DetailCommentInfo'
 import GoodsTemplate from 'components/content/GoodsShow/Goods'
 import Scroll from 'components/common/Scroll/Scroll.vue'
-import BackTop from 'components/content/BackTop/BackTop'
+
 
 
 import {getDetailData,Goods,getRecommend} from 'network/detail'
@@ -43,7 +43,7 @@ export default {
     DetailCommentInfo,
     GoodsTemplate,
     Scroll,
-    BackTop
+  
   },
   data() {
     return {
@@ -61,7 +61,6 @@ export default {
   created() {
     this.iid = this.$route.params.iid
     getDetailData(this.iid).then(res=>{
-      console.log(res)
       this.topImages=res.data.result.itemInfo.topImages
       const data = res.data.result
       this.GoodsInfo = new Goods(data.itemInfo,data.columns,data.shopInfo.services)
@@ -75,21 +74,6 @@ export default {
       this.list = res.data.data.list
     })
   },
-  backClick() {
-      this.$refs.scroll1.scroll.scrollTo(0,0,500)
-  },
-  contentScroll(position) {
-      if(position.y<-1000){
-        this.backshow=false
-      }else{
-        this.backshow=true
-      };
-      if(position.y<-this. offsetTop){
-        this.isImbibition=true
-      }else{
-        this.isImbibition=false
-      }
-    },
 }
 </script>
 
@@ -102,7 +86,8 @@ export default {
   .cotent{
     position: absolute;
     top: 44px;
-    bottom: 49px;
+    bottom: 0;
+    background-color: #fff;
   }
   .showBack{
     display: none;

@@ -37,6 +37,11 @@ export default {
 </script>
 
 <style scoped>
+  .detail-nav-bar{
+    background-color: #fff;
+    position: relative;
+    z-index: 9;
+  }
   .left{
     position: absolute;
   }
