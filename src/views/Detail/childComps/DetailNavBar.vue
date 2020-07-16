@@ -31,6 +31,7 @@ export default {
     },
     itemClick(index) {
       this.currtIndex=index
+      this.$emit('itemClick',index)
     }
   }
 }

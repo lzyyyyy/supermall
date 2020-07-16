@@ -44,7 +44,6 @@ export default {
   methods: {
     refresh() {
       this.scroll.refresh()
-      console.log(123);
     }
   }
 }

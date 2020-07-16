@@ -1,16 +1,17 @@
 <template>
   <div class="detail">
-    <detail-nav-bar/>
-    <scroll class="cotent">
+    <detail-nav-bar @itemClick='itemClick'/>
+    <scroll class="cotent" ref="scroll" :probeType='3' @scroll="contentScroll">
       <detail-swiper :topImages='topImages'/>
       <detail-base-info :goods='GoodsInfo'/>
       <detail-shop-info :shop='shopInfo'/>
-      <detail-goods-info :detailInfo='detailInfo'/>
-      <detail-param-info :paramInfo='paramInfo'/>
-      <detail-comment-info :commentInfo='commentInfo'/>
-      <goods-template :list='list'/>
+      <detail-goods-info :detailInfo='detailInfo' @detailImageLoad='detailImageLoad'/>
+      <detail-param-info ref='param' :paramInfo='paramInfo'/>
+      <detail-comment-info ref='comment' :commentInfo='commentInfo'/>
+      <goods-template ref='recommend' :list='list'/>
     </scroll>
-  
+    <back-top  @click.native="backClick" :class="{showBack:backshow}"/>
+    <detail-botton-bar/> 
   </div>
 </template>
 
@@ -24,7 +25,9 @@ import DetailParamInfo from './childComps/DetailParamInfo'
 import DetailCommentInfo from './childComps/DetailCommentInfo'
 import GoodsTemplate from 'components/content/GoodsShow/Goods'
 import Scroll from 'components/common/Scroll/Scroll.vue'
-
+import DetailBottonBar from './childComps/DetailBottonBar'
+import BackTop from 'components/content/BackTop/BackTop.vue'
+import {ImageLoadMixin} from 'common/mixin'
 
 
 import {getDetailData,Goods,getRecommend} from 'network/detail'
@@ -43,8 +46,10 @@ export default {
     DetailCommentInfo,
     GoodsTemplate,
     Scroll,
-  
+    DetailBottonBar,
+    BackTop
   },
+  mixins:[ImageLoadMixin],
   data() {
     return {
       iid:null,
@@ -55,7 +60,9 @@ export default {
       paramInfo:{},
       commentInfo:{},
       list:[],
-      backshow:true
+      backshow:true,
+      ImageLoadListener:null,
+      themeTopYs:[]      
     }
   },
   created() {
@@ -74,6 +81,33 @@ export default {
       this.list = res.data.data.list
     })
   },
+  destroyed() {
+    //取消事件监听
+    this.$bus.$off('itemImageLoad',this.ImageLoadListener)
+  },
+  methods:{
+    backClick() {
+      this.$refs.scroll.scroll.scrollTo(0,0,500)
+    },
+    contentScroll(position) {
+      if(position.y<-1000){
+        this.backshow=false
+      }else{
+        this.backshow=true
+      }
+    },
+    detailImageLoad() {
+      this.$refs.scroll.scroll.refresh
+      this.themeTopYs.push(0)
+      this.themeTopYs.push(-this.$refs.param.$el.offsetTop)
+      this.themeTopYs.push(-this.$refs.comment.$el.offsetTop)
+      this.themeTopYs.push(-this.$refs.recommend.$el.offsetTop)
+      console.log(this.themeTopYs);
+    },
+    itemClick(index) {
+      this.$refs.scroll.scroll.scrollTo(0,this.themeTopYs[index],0)
+    }        
+  }
 }
 </script>
 
@@ -86,7 +120,7 @@ export default {
   .cotent{
     position: absolute;
     top: 44px;
-    bottom: 0;
+    bottom: 58px;
     background-color: #fff;
   }
   .showBack{

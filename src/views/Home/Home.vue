@@ -24,8 +24,8 @@ import TabControl from 'components/content/TabControl.vue'
 import Goods from 'components/content/GoodsShow/Goods'
 import Scroll from 'components/common/Scroll/Scroll.vue'
 import BackTop from 'components/content/BackTop/BackTop.vue'
-import {debouce} from 'common/utils'
-import {itemListenerMixin} from 'common/mixin'
+import {ImageLoadMixin} from 'common/mixin'
+
 
 import {getHomeMultiData,getGoodsData} from 'network/home'
 
@@ -41,7 +41,7 @@ export default {
     Scroll,
     BackTop
   }, 
-  mixins:[itemListenerMixin],
+  mixins:[ImageLoadMixin],
   data() {
     return{
       banner: [],
@@ -56,7 +56,6 @@ export default {
       offsetTop:0,
       isImbibition: false,
       saveY:0,
-      ImageLoadListener:null,
     }
   },
   
@@ -66,15 +65,12 @@ export default {
     this.getGoodsData('new')
     this.getGoodsData('sell')
   },
-  mounted() {
-    const refresh = debouce(this.$refs.scroll.refresh,200)
-    this.ImageLoadListener = () => {
-      refresh()
-    }
-    this.$bus.$on('itemImageLoad',this.ImageLoadListener)
-  },
+
   activated() {
+    
     this.$refs.scroll.scroll.scrollTo(0,this.saveY,0)
+    
+    this.$bus.$on('itemImageLoad',this.ImageLoadListener)
   },
   deactivated() {
     //保存y值
