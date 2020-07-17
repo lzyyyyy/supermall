@@ -1,6 +1,6 @@
 <template>
   <div class="detail">
-    <detail-nav-bar @itemClick='itemClick'/>
+    <detail-nav-bar ref="nav" @itemClick='itemClick'/>
     <scroll class="cotent" ref="scroll" :probeType='3' @scroll="contentScroll">
       <detail-swiper :topImages='topImages'/>
       <detail-base-info :goods='GoodsInfo'/>
@@ -11,7 +11,7 @@
       <goods-template ref='recommend' :list='list'/>
     </scroll>
     <back-top  @click.native="backClick" :class="{showBack:backshow}"/>
-    <detail-botton-bar/> 
+    <detail-botton-bar @addToCart='addToCart'/> 
   </div>
 </template>
 
@@ -90,22 +90,40 @@ export default {
       this.$refs.scroll.scroll.scrollTo(0,0,500)
     },
     contentScroll(position) {
+      // console.log(position);
       if(position.y<-1000){
         this.backshow=false
       }else{
         this.backshow=true
       }
+
+      for(let i in this.themeTopYs) {
+        // console.log(i*1+1);
+        let positions=position.y
+        if((i<this.themeTopYs.length-1&&positions<this.themeTopYs[i]&&positions>this.themeTopYs[i*1+1])||i==this.themeTopYs.length-1&&positions<this.themeTopYs[i]) {
+          // console.log(i);
+          this.$refs.nav.currtIndex=i*1
+        }
+      }
     },
     detailImageLoad() {
       this.$refs.scroll.scroll.refresh
+      this.themeTopYs=[]
       this.themeTopYs.push(0)
       this.themeTopYs.push(-this.$refs.param.$el.offsetTop)
       this.themeTopYs.push(-this.$refs.comment.$el.offsetTop)
       this.themeTopYs.push(-this.$refs.recommend.$el.offsetTop)
-      console.log(this.themeTopYs);
+      // console.log(this.themeTopYs);
     },
     itemClick(index) {
       this.$refs.scroll.scroll.scrollTo(0,this.themeTopYs[index],0)
+    },
+    addToCart() {
+      const product = {}
+      product.image = this.topImages[0]
+      product.iid = this.iid
+
+      this.$store.commit('addCart',product)
     }        
   }
 }
