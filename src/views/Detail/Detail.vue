@@ -68,6 +68,7 @@ export default {
   created() {
     this.iid = this.$route.params.iid
     getDetailData(this.iid).then(res=>{
+      console.log(res);
       this.topImages=res.data.result.itemInfo.topImages
       const data = res.data.result
       this.GoodsInfo = new Goods(data.itemInfo,data.columns,data.shopInfo.services)
@@ -121,9 +122,12 @@ export default {
     addToCart() {
       const product = {}
       product.image = this.topImages[0]
+      product.title = this.GoodsInfo.title
+      product.desc = this.GoodsInfo.desc
+      product.newPrice = this.GoodsInfo.newPrice
       product.iid = this.iid
-
-      this.$store.commit('addCart',product)
+      product.count = 0
+      this.$store.dispatch('addCart',product)
     }        
   }
 }

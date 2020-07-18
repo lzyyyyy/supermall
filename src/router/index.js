@@ -7,9 +7,9 @@ const originalPush = VueRouter.prototype.push
 
 
 const Home = () => import('views/Home/Home')
-const Category = () => import('views/Category')
-const ShopCart = () => import('views/ShopCart')
-const Profile = () => import('views/Profile')
+const Category = () => import('views/Category/Category')
+const ShopCart = () => import('views/ShopCart/ShopCart')
+const Profile = () => import('views/Profile/Profile')
 const Detail = () => import('views/Detail/Detail')
 
 Vue.use(VueRouter);
