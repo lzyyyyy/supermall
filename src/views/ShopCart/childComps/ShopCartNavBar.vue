@@ -19,9 +19,9 @@ export default {
   computed:{
     ...mapGetters([
       'cartLength'
-    ])
-    
-  }
+    ])    
+  },
+
 }
 </script>
 
@@ -29,5 +29,7 @@ export default {
   .navbar{
     background-color:var(--color-tint);
     color: #fff;
+    position: relative;
+    z-index: 1;
   }
 </style>

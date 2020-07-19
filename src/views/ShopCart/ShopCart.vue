@@ -1,35 +1,30 @@
 <template>
   <div class="shopcart">
     <shop-cart-nav-bar/>
-    <scroll class="content">
-      <car-list/>
-    </scroll>
+    <car-list/>
+    <cart-buttom-bar/>
   </div>
 </template>
 
 <script>
 import ShopCartNavBar from './childComps/ShopCartNavBar'
 import CarList from './childComps/CarList'
-import Scroll from 'components/common/Scroll/Scroll'
+import CartButtomBar from './childComps/CartButtomBar'
+
 
 export default {
   name:'shopcart',
   components:{
     ShopCartNavBar,
     CarList,
-    Scroll
-  }
+    CartButtomBar
+  },
 }
 </script>
 
-<style>
+<style scoped>
   .shopcart{
     height: 100vh;
     position: relative;
-  }
-  .content{
-    position: absolute;
-    top: 44px;
-    bottom: 49px;
   }
 </style>
