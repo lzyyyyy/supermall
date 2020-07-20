@@ -28,6 +28,7 @@ import Scroll from 'components/common/Scroll/Scroll.vue'
 import DetailBottonBar from './childComps/DetailBottonBar'
 import BackTop from 'components/content/BackTop/BackTop.vue'
 import {ImageLoadMixin} from 'common/mixin'
+import Toast from 'components/common/Toast/Toast'
 
 
 import {getDetailData,Goods,getRecommend} from 'network/detail'
@@ -47,7 +48,8 @@ export default {
     GoodsTemplate,
     Scroll,
     DetailBottonBar,
-    BackTop
+    BackTop,
+    Toast
   },
   mixins:[ImageLoadMixin],
   data() {
@@ -68,7 +70,6 @@ export default {
   created() {
     this.iid = this.$route.params.iid
     getDetailData(this.iid).then(res=>{
-      console.log(res);
       this.topImages=res.data.result.itemInfo.topImages
       const data = res.data.result
       this.GoodsInfo = new Goods(data.itemInfo,data.columns,data.shopInfo.services)
@@ -127,7 +128,9 @@ export default {
       product.newPrice = this.GoodsInfo.newPrice
       product.iid = this.iid
       product.count = 0
-      this.$store.dispatch('addCart',product)
+      this.$store.dispatch('addCart',product).then(res=>{
+        this.$toast.show(res,2000)
+      })
     }        
   }
 }
