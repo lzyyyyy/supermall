@@ -10,7 +10,7 @@ export function request(config) {
 
 export function request1(config) {
   const instance1 = axios.create({
-    baseURL:'',
+    baseURL:'#',
     timeout:5000
   })
   return instance1(config)
