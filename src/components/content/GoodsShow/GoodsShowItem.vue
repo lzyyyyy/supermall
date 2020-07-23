@@ -30,7 +30,7 @@ export default {
   },
   computed:{
     showImage() {
-      return this.goodsdata.image || this.goodsdata.show.img
+      return this.goodsdata.img || this.goodsdata.image || this.goodsdata.show.img
     }
   }
 }

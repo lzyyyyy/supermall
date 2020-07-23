@@ -45,7 +45,7 @@ export default {
   .tabmeun-item{
     height: 40px;
     line-height: 40px;
-    width: 80px;
+    width: 100px;
     background: #eee;
     text-align: center;
   }
