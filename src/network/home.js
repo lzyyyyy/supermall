@@ -1,15 +1,18 @@
-import {request,request1} from './request'
+import axios from './axios'
 
-export function getHomeMultiData() {
-  return request({
-    url:'home/multidata'
+export const BANNER = 'banner'
+export const RECOMMEND = 'recommend'
+
+export function getHomeMultidata() {
+  return axios({
+    url: '/home/multidata'
   })
 }
 
-export function getGoodsData(type,page) {
-  return request1({
-    url:'home/data',
-    params:{
+export function getHomeData(type, page) {
+  return axios({
+    url: '/home/data',
+    params: {
       type,
       page
     }

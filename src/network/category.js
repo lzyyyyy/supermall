@@ -1,13 +1,14 @@
-import {request1} from "./request"
+import axios from './axios'
 
-export function getCategoryData(){
-  return request1({
-    url:'/category'
+
+export function getCategory() {
+  return axios({
+    url: '/category'
   })
 }
 
 export function getSubcategory(maitKey) {
-  return request1({
+  return axios({
     url: '/subcategory',
     params: {
       maitKey
@@ -16,7 +17,7 @@ export function getSubcategory(maitKey) {
 }
 
 export function getCategoryDetail(miniWallkey, type) {
-  return request1({
+  return axios({
     url: '/subcategory/detail',
     params: {
       miniWallkey,

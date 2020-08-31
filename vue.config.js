@@ -1,14 +1,16 @@
 module.exports = {
+  baseUrl: './',
   configureWebpack: {
     resolve: {
       alias: {
-        'views': '@/views',
         'components': '@/components',
-        'network': '@/network',
-        'common': '@/common',
+        'content': 'components/content',
+        'common': 'components/common',
         'assets': '@/assets',
+        'network': '@/network',
+        'views': '@/views',
       }
-    }
-  },
-  lintOnSave: false
+    },
+  }
 }
+

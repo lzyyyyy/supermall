@@ -1,48 +1,49 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-const originalPush = VueRouter.prototype.push
-   VueRouter.prototype.push = function push(location) {
-   return originalPush.call(this, location).catch(err => err)
-}
 
+const Home = () => import('views/home/Home')
+const Category = () => import('views/category/Category')
+const Cart = () => import('views/cart/Cart')
+const Profile = () => import('views/profile/Profile')
+const Detail = () => import('views/detail/Detail')
 
-const Home = () => import('views/Home/Home')
-const Category = () => import('views/Category/Category')
-const ShopCart = () => import('views/ShopCart/ShopCart')
-const Profile = () => import('views/Profile/Profile')
-const Detail = () => import('views/Detail/Detail')
+// 1.安装VueRouter
+Vue.use(VueRouter)
 
-Vue.use(VueRouter);
+// 2.配置路由信息
+const routes = [
+  {
+    path: '/',
+    redirect: '/home'
+  },
+  {
+    path: '/home',
+    component: Home
+  },
+  {
+    path: '/category',
+    component: Category
+  },
+  {
+    path: '/cart',
+    component: Cart
+  },
+  {
+    path: '/profile',
+    component: Profile
+  },
+  {
+    path: '/detail',
+    component: Detail
+  }
+]
 
-const router = new VueRouter ({
-  routes: [
-    {
-      path: '/',
-      redirect: '/home'
-    },
-    {
-      path: '/home',
-      component: Home
-    },
-    {
-      path: '/category',
-      component: Category
-    },
-    {
-      path: '/shopcart',
-      component: ShopCart
-    },
-    {
-      path: '/profile',
-      component: Profile
-    },
-    {
-      path: '/detail/:iid',
-      component: Detail
-    }
-  ],
-  mode: 'history'
-  
+// 3.创建路由对象
+const router = new VueRouter({
+  base: '/',
+  mode: 'hash',
+  routes
 })
 
+// 4.导出
 export default router

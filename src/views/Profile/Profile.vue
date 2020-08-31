@@ -1,6 +1,6 @@
 <template>
   <div id="profile">
-    <nav-bar class="nav-bar"><div slot="center">超级商城</div></nav-bar>
+    <nav-bar class="nav-bar"><div slot="center">购物街</div></nav-bar>
     <!--1.单独封装一个组件: 利用slot知识点-->
     <UserInfo></UserInfo>
 
@@ -35,7 +35,7 @@
 <script>
   import UserInfo from './childComps/UserInfo'
   import ListView from './childComps/ListView'
-  import NavBar from 'components/common/NavBar/NavBar'
+  import NavBar from 'common/navbar/NavBar'
 
 	export default {
 		name: "Profile",

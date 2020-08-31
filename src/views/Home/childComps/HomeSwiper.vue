@@ -1,42 +1,41 @@
 <template>
-  <swiper>
-      <swiper-item v-for='(item,index) in banner' :key='index'>
-        <a :href="item.link">
-          <img :src="item.image" alt="" @load="swiperLoad">
-        </a>
-      </swiper-item>
+  <swiper ref="swiper" v-if="banners.length">
+    <swiper-item v-for="(item, index) in banners" :key="index">
+      <a :href="item.link">
+        <img :src="item.image" alt="">
+      </a>
+    </swiper-item>
   </swiper>
 </template>
 
 <script>
-// <template>
-//     <swiper class="detailswiper">
-//       <swiper-item v-for='item in banner'>        
-//           <img :src="item">     
-//       </swiper-item>
-//     </swiper>
-// </template>
+  import {Swiper, SwiperItem} from 'common/swiper'
 
-import {Swiper,SwiperItem} from 'components/common/swiper'
-export default {
-  name: 'homeswiper',
-  components: {
-    Swiper,
-    SwiperItem
-  },
-  props:{
-    banner:{
-      type: Array,
-      default() {
-        return []
+	export default {
+		name: "HomeSwiper",
+    components: {
+		  Swiper,
+      SwiperItem
+    },
+    props: {
+		  banners: {
+		    type: Array,
+        default: []
+      }
+    },
+    methods: {
+		  stopTimer() {
+		    this.$refs.swiper.stopTimer()
+      },
+      startTimer() {
+		    if (this.$refs.swiper) {
+          this.$refs.swiper.startTimer()
+        }
       }
     }
-  },
-  methods: {
-    swiperLoad() {
-      this.$emit('swiperImageLoad')
-    }
-  }
-}
+	}
 </script>
 
+<style scoped>
+
+</style>

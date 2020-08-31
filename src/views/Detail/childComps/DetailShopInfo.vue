@@ -1,20 +1,20 @@
 <template>
   <div class="shop-info">
     <div class="shop-top">
-      <img :src="shop.shopLogo">
+      <img :src="shop.logo">
       <span class="title">{{shop.name}}</span>
     </div>
     <div class="shop-middle">
       <div class="shop-middle-item shop-middle-left">
         <div class="info-sells">
           <div class="sells-count">
-            {{shop.cSells | sellCountFilter}}
+            {{shop.sells | sellCountFilter}}
           </div>
           <div class="sells-text">总销量</div>
         </div>
         <div class="info-goods">
           <div class="goods-count">
-            {{shop.cGoods}}
+            {{shop.goodsCount}}
           </div>
           <div class="goods-text">全部宝贝</div>
         </div>

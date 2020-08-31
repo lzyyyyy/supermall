@@ -1,5 +1,5 @@
 <template>
-    <div class="hy-swiper">
+    <div id="hy-swiper">
       <div class="swiper" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
         <slot></slot>
       </div>
@@ -50,7 +50,7 @@
 
         // 2.开启定时器
         this.startTimer();
-      }, 500)
+      }, 3000)
     },
     methods: {
 		  /**
@@ -210,7 +210,7 @@
 </script>
 
 <style scoped>
-  .hy-swiper {
+  #hy-swiper {
     overflow: hidden;
     position: relative;
   }

@@ -1,64 +1,68 @@
 <template>
-  <div class="detail-nav-bar">
-    <nav-bar>
-      <div slot="left" class="left" @click="backClick">
-        <img src="~assets/img/common/back.svg" alt="">
-      </div>
-      <div slot="center" class="center">
-        <div v-for='(item,index) in title' class="item" :class="{active:index===currtIndex}" @click="itemClick(index)">{{item}}</div>
-      </div>
-    </nav-bar>
-  </div>
+  <nav-bar class="detail-nav">
+    <img slot="left" class="back" @click="backClick" src="~assets/img/common/back.svg">
+    <div class="title" slot="center">
+      <span class="title-item"
+            v-for="(item, index) in titleInfos" :key="index"
+            :class="{'active': index===currentIndex}" @click="itemClick(index)">
+        {{item}}
+      </span>
+    </div>
+  </nav-bar>
 </template>
 
 <script>
-import NavBar from 'components/common/NavBar/NavBar'
-export default {
-  name:'detail',
-  components:{
-    NavBar
-  },
-  data() {
-    return {
-      title:['商品','参数','评论','推荐'],
-      currtIndex:0,
-      isColor:true
-    }
-  },
-  methods:{
-    backClick() {
-      this.$router.go(-1)
+  import NavBar from 'common/navbar/NavBar'
+
+	export default {
+		name: "DetailNavBar",
+    components: {
+		  NavBar
     },
-    itemClick(index) {
-      this.currtIndex=index
-      this.$emit('itemClick',index)
+    props: {
+		  titleInfos: {
+		    type: Array,
+        default: () => {
+          return ['商品', '参数', '评论', '推荐']
+        }
+      },
+      currentIndex: {
+		    type: Number,
+        default: 0
+      }
+    },
+    methods: {
+      itemClick: function (index) {
+        this.$emit('itemClick', index)
+      },
+      backClick() {
+        this.$router.back()
+      }
     }
-  }
-}
+	}
 </script>
 
 <style scoped>
-  .detail-nav-bar{
+  .detail-nav {
     background-color: #fff;
-    position: relative;
-    z-index: 9;
+    font-weight: normal;
   }
-  .left{
-    position: absolute;
-  }
-  .left img{
-    position: relative;
-    top: 6px;
-    left: 20px;
-  }
-  .center{
+
+  .title {
     display: flex;
+    padding: 0 20px;
+    font-size: 14px;
   }
-  .center .item{
+
+  .title-item {
     flex: 1;
-    font-size: 16px;
   }
-  .active{
+
+  .title-item.active {
     color: var(--color-high-text);
+  }
+
+  .back {
+    margin-top: 12px;
   }
 </style>
