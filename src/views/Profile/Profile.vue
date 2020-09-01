@@ -2,7 +2,7 @@
   <div id="profile">
     <nav-bar class="nav-bar"><div slot="center">购物街</div></nav-bar>
     <!--1.单独封装一个组件: 利用slot知识点-->
-    <UserInfo></UserInfo>
+    <UserInfo @click="littleTips"></UserInfo>
 
     <!--2.没有单独封装: 不同的地方太多, 需要传过多的参数-->
     <section class="account">
@@ -36,11 +36,12 @@
   import UserInfo from './childComps/UserInfo'
   import ListView from './childComps/ListView'
   import NavBar from 'common/navbar/NavBar'
+  import Toast from 'components/common/Toast/Toast'
 
 	export default {
 		name: "Profile",
     components: {
-		  UserInfo, ListView, NavBar
+		  UserInfo, ListView, NavBar, Toast
     },
     data: function () {
 		  return {
@@ -56,6 +57,11 @@
       }
     },
     mounted: function () {
+    },
+    methods: {
+      littleTips() {
+        this.$toast.show('功能正在开发中',2000)
+      }
     }
 	}
 </script>

@@ -4,6 +4,11 @@ import router from './router'
 import store from './store'
 import VueLazyLoad from 'vue-lazyload'
 
+import toast from 'components/common/Toast'
+
+//安装toast插件
+Vue.use(toast)
+
 Vue.config.productionTip = false
 
 Vue.use(VueLazyLoad, {
